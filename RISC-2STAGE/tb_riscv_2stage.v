@@ -4,10 +4,12 @@ module tb_riscv_2stage;
 
     reg clk;
     reg reset;
+    wire [31:0] probe_pc; // Added to catch the new output port
 
     riscv_2stage dut (
         .clk(clk),
-        .reset(reset)
+        .reset(reset),
+        .probe_pc(probe_pc) // Connected here
     );
 
     always #5 clk = ~clk;

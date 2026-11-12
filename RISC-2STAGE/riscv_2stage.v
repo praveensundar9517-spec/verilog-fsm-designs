@@ -10,10 +10,13 @@
 
 module riscv_2stage (
     input wire clk,
-    input wire reset
+    input wire reset,
+    output wire [31:0] probe_pc  // Added to prevent logic deletion during synthesis
 );
 
     reg [31:0] pc;
+    assign probe_pc = pc; // Drive the output port
+
     reg [31:0] instruction_mem [0:63];
     reg [31:0] data_mem        [0:63];
     reg [31:0] registers       [0:31];
@@ -56,12 +59,12 @@ module riscv_2stage (
 
     // Combinational instruction decode and ALU
     always @(*) begin
-        alu_result   = 32'd0;
-        write_data   = 32'd0;
-        reg_write    = 1'b0;
-        mem_write    = 1'b0;
-        mem_read     = 1'b0;
-        branch_taken = 1'b0;
+        alu_result    = 32'd0;
+        write_data    = 32'd0;
+        reg_write     = 1'b0;
+        mem_write     = 1'b0;
+        mem_read      = 1'b0;
+        branch_taken  = 1'b0;
         branch_target = if_id_pc + imm_b;
 
         case (opcode)
